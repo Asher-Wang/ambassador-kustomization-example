@@ -1,0 +1,5 @@
+{
+  "restartable": "rs",
+  "verbose": true,
+  "watch": ["auth-service.json", "/etc/mock/mock-service.json"]
+}

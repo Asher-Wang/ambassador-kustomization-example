@@ -1,0 +1,32 @@
+name: Build Auth Service
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build container image
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          file: auth-service/Dockerfile
+          tags: |
+            dizy/ambassador-test-auth-service:latest
+            dizy/ambassador-test-auth-service:${{ github.sha }}

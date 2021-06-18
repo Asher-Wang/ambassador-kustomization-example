@@ -11,7 +11,9 @@
   "files.trimTrailingWhitespace": true,
   "cSpell.words": [
     "Kubernetes",
+    "bodyparser",
     "crds",
+    "dizy",
     "kubectl",
     "kustomization",
     "minikube",
