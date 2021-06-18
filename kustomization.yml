@@ -1,0 +1,6 @@
+namespace: ambassador
+resources:
+  - ambassador/namespace.yml
+  - ambassador/ambassador-crds.yml
+  - ambassador/ambassador-rbac.yml
+  - services/quote.yml
