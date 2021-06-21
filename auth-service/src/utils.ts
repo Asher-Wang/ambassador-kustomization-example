@@ -20,5 +20,5 @@ export const loggingMiddleware: Middleware = async (context, next) => {
 
   await next();
 
-  console.log(`[Response] ${JSON.stringify(context.body)}`);
+  console.log(`[Response] ${context.status} ${JSON.stringify(context.body)}`);
 };

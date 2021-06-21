@@ -5,11 +5,13 @@ import {camelToSnakeCase} from './utils';
 export interface Config {
   port: number;
   debug: boolean;
+  accessTokens: string[];
 }
 
 const DEFAULT_CONFIG: Config = {
   port: 3000,
   debug: true,
+  accessTokens: [],
 };
 
 let configPath;
@@ -44,11 +46,17 @@ for (let configKey of Object.keys(config)) {
 
   if (envKey in process.env) {
     let value;
+    let _value = process.env[envKey];
+
+    if (!_value) {
+      console.warn(`Env variable ${envKey} is empty, ignoring...`);
+      continue;
+    }
 
     switch (envKey) {
       // number
       case 'port':
-        value = Number(process.env[envKey]);
+        value = Number(_value);
         if (isNaN(value)) {
           console.warn(`Env variable ${envKey} is not number, ignoring...`);
           continue;
@@ -56,16 +64,25 @@ for (let configKey of Object.keys(config)) {
         break;
       // boolean
       case 'debug':
-        let _value = process.env[envKey];
         value = _value && _value.toLocaleLowerCase() === 'true' ? true : false;
+        break;
+      // comma-split string array
+      case 'accessTokens':
+        {
+          let items = _value
+            .split(',')
+            .map(item => item.trim())
+            .filter(item => item.length > 0);
+          if (items.length === 0) {
+            console.warn(`Env variable ${envKey} is empty, ignoring...`);
+            continue;
+          }
+          value = items;
+        }
         break;
       // string
       default:
-        value = process.env[envKey];
-        if (!value) {
-          console.warn(`Env variable ${envKey} is empty, ignoring...`);
-          continue;
-        }
+        value = _value;
         break;
     }
 
