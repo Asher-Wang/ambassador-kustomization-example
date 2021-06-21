@@ -15,4 +15,8 @@ router.get('/', context => {
 </html>`;
 });
 
+router.all('/auth', context => {
+  let authorization = context.get('authorization');
+});
+
 export {router};
