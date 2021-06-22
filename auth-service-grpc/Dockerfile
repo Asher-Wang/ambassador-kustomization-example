@@ -11,4 +11,4 @@ COPY . .
 
 RUN GOOS=linux GOARCH=amd64 go build server.go
 
-ENTRYPOINT ["/server"]
+ENTRYPOINT ["/app/server"]
