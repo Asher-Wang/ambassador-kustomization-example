@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/dizys/ambassador-kustomization-example/auth-service-grpc/config"
-	"github.com/dizys/ambassador-kustomization-example/auth-service-grpc/server"
+	"github.com/dizys/ambassador-kustomization-example/auth-service-grpc/serve"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	s, err := server.CreateServer()
+	s, err := serve.CreateServer()
 
 	if err != nil {
 		log.Fatalf("Error creating server: %v\n", err)
