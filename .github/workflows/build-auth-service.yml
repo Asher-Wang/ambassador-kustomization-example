@@ -1,4 +1,4 @@
-name: Build Auth Service (HTTP)
+name: Build Images
 
 on:
   push:
