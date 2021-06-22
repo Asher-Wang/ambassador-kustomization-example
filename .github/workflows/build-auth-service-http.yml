@@ -1,4 +1,4 @@
-name: Build Auth Service
+name: Build Auth Service (HTTP)
 
 on:
   push:
@@ -26,7 +26,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          context: auth-service
-          tags: |
+          context: auth-service-http
             dizy/ambassador-test-auth-service:latest
             dizy/ambassador-test-auth-service:${{ github.sha }}
