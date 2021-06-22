@@ -27,5 +27,6 @@ jobs:
         with:
           push: true
           context: auth-service-http
-            dizy/ambassador-test-auth-service:latest
-            dizy/ambassador-test-auth-service:${{ github.sha }}
+          tags: |
+            dizy/ambassador-test-auth-service-http:latest
+            dizy/ambassador-test-auth-service-http:${{ github.sha }}
