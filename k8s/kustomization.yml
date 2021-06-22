@@ -4,4 +4,6 @@ resources:
   - ambassador/ambassador-crds.yml
   - ambassador/ambassador-rbac.yml
   - ambassador/ambassador-svc.yml
+  - services/auth-service-http.yml
+  - services/auth-service-grpc.yml
   - services/quote.yml

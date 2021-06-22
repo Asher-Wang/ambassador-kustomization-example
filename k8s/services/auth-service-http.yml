@@ -1,0 +1,63 @@
+---
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: auth-service-http
+spec:
+  prefix: /auth-service-http/
+  service: auth-service-http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service-http
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+  selector:
+    app: auth-service-http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service-http
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-service-http
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: auth-service-http
+    spec:
+      containers:
+        - name: auth-service-http
+          image: docker.io/dizy/ambassador-test-auth-service-http:latest
+          ports:
+            - name: http
+              containerPort: 3000
+          volumeMounts:
+            - name: auth-service-http-volume
+              mountPath: '/etc/mock'
+              readOnly: true
+      volumes:
+        - name: auth-service-http-volume
+          configMap:
+            name: auth-service-http-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-service-http-config
+data:
+  auth-service-http.json: |
+    {
+      "port": 3000,
+      "request_logging": true,
+      "access_tokens": ["test"]
+    }
