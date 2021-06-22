@@ -4,7 +4,9 @@ Kubernetes kustomization example for setting up Ambassador Gateway, basic auth a
 
 ## Getting started
 
-All the Kubernetes resources are described in this repository and managed with a single Kustomization entry `kustomization.yml`.
+All the Kubernetes resources are described in this repository and managed with a single Kustomization entry `kustomization.yml` under folder `k8s`.
+
+The following commands are executed under the folder `k8s`.
 
 **1. Apply kustomization**
 

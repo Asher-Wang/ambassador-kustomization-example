@@ -20,7 +20,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	log.Printf("Auth service (HTTP) running on %d...", port)
+	log.Printf("Auth service (HTTP) running on %d...\n", port)
 
 	err := http.ListenAndServe(fmt.Sprintf(":%d", port), &handler.Handler{})
 	if err != nil {

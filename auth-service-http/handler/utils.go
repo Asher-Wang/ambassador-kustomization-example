@@ -1,4 +1,4 @@
-package utils
+package handler
 
 import (
 	"log"
@@ -7,7 +7,7 @@ import (
 	"github.com/dizys/ambassador-kustomization-example/auth-service-http/config"
 )
 
-func Err(resp http.ResponseWriter, statusCode int, message string) {
+func err(resp http.ResponseWriter, statusCode int, message string) {
 	resp.WriteHeader(statusCode)
 	resp.Write([]byte(message))
 

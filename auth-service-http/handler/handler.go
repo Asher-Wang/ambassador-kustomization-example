@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/dizys/ambassador-kustomization-example/auth-service-http/config"
-	"github.com/dizys/ambassador-kustomization-example/auth-service-http/utils"
 )
 
 type Handler struct {
@@ -16,20 +15,21 @@ func (h *Handler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	authStr := req.Header.Get("Authorization")
 
 	if config.Config.GetBool("request_logging") {
-		log.Printf("[Request] %s - %s: %s\n", req.Method, req.RequestURI, req.PostForm.Encode())
+		log.Printf("[Request] %s - %s (token: %s): %s\n", req.Method, req.RequestURI, authStr, req.PostForm.Encode())
 	}
 
 	if authStr == "" {
-		utils.Err(resp, 401, "Unauthenticated")
+		err(resp, 401, "Unauthenticated")
+		return
 	}
 
 	if !strings.HasPrefix(authStr, "Bearer ") {
-		utils.Err(resp, 401, "Invalid access token type")
+		err(resp, 401, "Invalid access token type")
 		return
 	}
 
 	unverifiedToken := strings.TrimPrefix(authStr, "Bearer ")
-	accessTokens := config.Config.GetStringSlice("accessTokens")
+	accessTokens := config.Config.GetStringSlice("access_tokens")
 
 	verified := false
 
@@ -41,7 +41,7 @@ func (h *Handler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	}
 
 	if !verified {
-		utils.Err(resp, 401, "Unauthorized")
+		err(resp, 401, "Unauthorized")
 		return
 	}
 
