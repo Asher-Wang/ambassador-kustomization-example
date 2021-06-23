@@ -60,6 +60,6 @@ data:
     {
       "port": 3000,
       "request_logging": true,
-      "max_concurrent_streams": 10,
+      "max_concurrent_streams": 400,
       "access_tokens": ["test"]
     }
