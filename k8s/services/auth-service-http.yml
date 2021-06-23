@@ -12,12 +12,13 @@ kind: Service
 metadata:
   name: auth-service-http
 spec:
-  ports:
-    - name: http
-      port: 80
-      targetPort: 3000
+  type: ClusterIP
   selector:
     app: auth-service-http
+  ports:
+    - name: http-auth-service-http
+      targetPort: 3000
+      port: 3000
 ---
 apiVersion: apps/v1
 kind: Deployment

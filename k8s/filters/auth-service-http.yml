@@ -1,0 +1,13 @@
+---
+apiVersion: getambassador.io/v2
+kind: AuthService
+metadata:
+  name: auth-service-http-obj
+  namespace: ambassador
+spec:
+  auth_service: 'auth-service-http:3000'
+  path_prefix: '/quote'
+  allowed_request_headers:
+    - 'Authorization'
+  allowed_authorization_headers:
+    - 'Authorization'

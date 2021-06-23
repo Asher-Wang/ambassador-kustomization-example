@@ -20,10 +20,10 @@ func (a *AuthServer) Check(context context.Context, req *auth.CheckRequest) (*au
 	httpReq := req.Attributes.Request.Http
 	headers := httpReq.Headers
 
-	authStr, ok := headers["Authorization"]
+	authStr, ok := headers["authorization"]
 
 	if config.Config.GetBool("request_logging") {
-		log.Printf("[Request] %s - %s (token: %s): %s\n", httpReq.Method, httpReq.Path+"?"+httpReq.Query, authStr, httpReq.Body)
+		log.Printf("[Request] %s - %s (token: %s): %s\n", httpReq.Method, httpReq.Path, authStr, httpReq.Body)
 	}
 
 	if !ok {

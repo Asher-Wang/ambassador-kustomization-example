@@ -1,0 +1,12 @@
+---
+apiVersion: getambassador.io/v2
+kind: AuthService
+metadata:
+  name: 'auth-service-grpc-obj'
+  namespace: ambassador
+spec:
+  auth_service: 'auth-service-grpc:3000'
+  tls: false
+  timeout_ms: 5000
+  proto: grpc
+  protocol_version: v3

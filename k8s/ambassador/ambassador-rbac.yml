@@ -97,7 +97,7 @@ metadata:
     product: aes
     rbac.getambassador.io/role-group: ambassador
 rules:
-  - apiGroups: [""]
+  - apiGroups: ['']
     resources:
       - namespaces
       - services
@@ -106,7 +106,7 @@ rules:
     verbs: [get, list, watch]
 
   - apiGroups: [getambassador.io]
-    resources: ["*"]
+    resources: ['*']
     verbs: [get, list, watch, update, patch, create, delete]
 
   - apiGroups: [getambassador.io]
@@ -118,7 +118,7 @@ rules:
     verbs: [get, list, watch]
 
   - apiGroups: [networking.x-k8s.io]
-    resources: ["*"]
+    resources: ['*']
     verbs: [get, list, watch]
 
   - apiGroups: [networking.internal.knative.dev]
@@ -154,8 +154,8 @@ spec:
         service: ambassador
         app.kubernetes.io/managed-by: getambassador.io
       annotations:
-        consul.hashicorp.com/connect-inject: "false"
-        sidecar.istio.io/inject: "false"
+        consul.hashicorp.com/connect-inject: 'false'
+        sidecar.istio.io/inject: 'false'
     spec:
       terminationGracePeriodSeconds: 0
       securityContext:
@@ -189,6 +189,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: AMBASSADOR_ENVOY_API_VERSION
+              value: 'V3'
           securityContext:
             allowPrivilegeEscalation: false
           livenessProbe:
@@ -276,7 +278,7 @@ metadata:
     rbac.getambassador.io/role-group: ambassador-agent
     product: aes
 rules:
-  - apiGroups: [""]
+  - apiGroups: ['']
     resources: [pods]
     verbs: [get, list, watch]
 ---
@@ -315,7 +317,7 @@ metadata:
   labels:
     product: aes
 rules:
-  - apiGroups: [""]
+  - apiGroups: ['']
     resources: [configmaps]
     verbs: [get, list, watch]
 ---
