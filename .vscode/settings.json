@@ -18,6 +18,7 @@
     "kubectl",
     "kustomization",
     "minikube",
+    "nodeport",
     "qotm",
     "rbac"
   ]
