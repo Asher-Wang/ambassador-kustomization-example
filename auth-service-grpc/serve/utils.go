@@ -1,4 +1,4 @@
-package handler
+package serve
 
 import (
 	"crypto/rsa"
@@ -6,20 +6,7 @@ import (
 	"encoding/json"
 	"encoding/pem"
 	"fmt"
-	"log"
-	"net/http"
-
-	"github.com/dizys/ambassador-kustomization-example/auth-service-http/config"
 )
-
-func rErr(resp http.ResponseWriter, statusCode int, message string) {
-	resp.WriteHeader(statusCode)
-	resp.Write([]byte(message))
-
-	if config.Config.GetBool("request_logging") {
-		log.Printf("[Response] %d: %s\n", statusCode, message)
-	}
-}
 
 func PEMStringToRSAPublicKey(pemStr string) (*rsa.PublicKey, error) {
 	p, _ := pem.Decode([]byte(pemStr))
@@ -38,12 +25,6 @@ func PEMStringToRSAPublicKey(pemStr string) (*rsa.PublicKey, error) {
 	}
 
 	return nil, fmt.Errorf("public key type is not RSA")
-}
-
-func PEMStringToRSAPrivateKey(pemStr string) (*rsa.PrivateKey, error) {
-	p, _ := pem.Decode([]byte(pemStr))
-
-	return x509.ParsePKCS1PrivateKey(p.Bytes)
 }
 
 func StructToJSON(obj interface{}) (string, error) {

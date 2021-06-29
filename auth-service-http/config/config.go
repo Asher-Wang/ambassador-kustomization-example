@@ -12,8 +12,9 @@ var Config = _viper.New()
 
 func SetupConfig() {
 	Config.SetDefault("port", 3000)
-	Config.SetDefault("access_tokens", []string{"test"})
 	Config.SetDefault("request_logging", true)
+	Config.SetDefault("jwt_rsa_public_key", "")
+	Config.SetDefault("jwt_rsa_private_key", "")
 
 	Config.AutomaticEnv()
 

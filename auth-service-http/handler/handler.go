@@ -6,7 +6,14 @@ import (
 	"strings"
 
 	"github.com/dizys/ambassador-kustomization-example/auth-service-http/config"
+	"github.com/golang-jwt/jwt"
 )
+
+type Claims struct {
+	*jwt.StandardClaims
+	Id       int64  `json:"id,omitempty"`
+	Username string `json:"username,omitempty"`
+}
 
 type Handler struct {
 }
@@ -19,31 +26,45 @@ func (h *Handler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	}
 
 	if authStr == "" {
-		err(resp, 401, "Unauthenticated")
+		rErr(resp, 401, "Unauthenticated")
 		return
 	}
 
 	if !strings.HasPrefix(authStr, "Bearer ") {
-		err(resp, 401, "Invalid access token type")
+		rErr(resp, 401, "Invalid access token type")
 		return
 	}
 
 	unverifiedToken := strings.TrimPrefix(authStr, "Bearer ")
-	accessTokens := config.Config.GetStringSlice("access_tokens")
 
-	verified := false
+	pubKeyPEM := config.Config.GetString("jwt_rsa_public_key")
 
-	for _, accessToken := range accessTokens {
-		if accessToken == unverifiedToken {
-			verified = true
-			break
-		}
-	}
+	pubKey, err := PEMStringToRSAPublicKey(pubKeyPEM)
 
-	if !verified {
-		err(resp, 401, "Unauthorized")
+	if err != nil {
+		rErr(resp, 503, "Invalid public key")
 		return
 	}
+
+	token, err := jwt.ParseWithClaims(unverifiedToken, &Claims{}, func(t *jwt.Token) (interface{}, error) {
+		return pubKey, nil
+	})
+
+	if err != nil {
+		rErr(resp, 401, "Unauthorized")
+		return
+	}
+
+	claims := token.Claims.(*Claims)
+
+	claimsStr, err := StructToJSON(claims)
+
+	if err != nil {
+		rErr(resp, 503, "Cannot convert claims to JSON")
+		return
+	}
+
+	resp.Header().Add("x-passport", claimsStr)
 
 	resp.Write([]byte("OK"))
 

@@ -10,8 +10,15 @@ import (
 	auth "github.com/envoyproxy/go-control-plane/envoy/service/auth/v3"
 	envoy_type "github.com/envoyproxy/go-control-plane/envoy/type/v3"
 	"github.com/gogo/googleapis/google/rpc"
+	"github.com/golang-jwt/jwt"
 	rpc_status "google.golang.org/genproto/googleapis/rpc/status"
 )
+
+type Claims struct {
+	*jwt.StandardClaims
+	Id       int64  `json:"id,omitempty"`
+	Username string `json:"username,omitempty"`
+}
 
 type AuthServer struct {
 }
@@ -35,22 +42,37 @@ func (a *AuthServer) Check(context context.Context, req *auth.CheckRequest) (*au
 	}
 
 	unverifiedToken := strings.TrimPrefix(authStr, "Bearer ")
-	accessTokens := config.Config.GetStringSlice("access_tokens")
 
-	verified := false
+	pubKeyPEM := config.Config.GetString("jwt_rsa_public_key")
 
-	for _, accessToken := range accessTokens {
-		if accessToken == unverifiedToken {
-			verified = true
-			break
-		}
+	pubKey, err := PEMStringToRSAPublicKey(pubKeyPEM)
+
+	if err != nil {
+		return makeAuthCheckDeniedResponse(int32(rpc.INTERNAL), 503, []*envoy_core.HeaderValueOption{}, "Invalid public key"), nil
 	}
 
-	if !verified {
+	token, err := jwt.ParseWithClaims(unverifiedToken, &Claims{}, func(t *jwt.Token) (interface{}, error) {
+		return pubKey, nil
+	})
+
+	if err != nil {
 		return makeAuthCheckDeniedResponse(int32(rpc.PERMISSION_DENIED), 401, []*envoy_core.HeaderValueOption{}, "Unauthorized"), nil
 	}
 
-	return makeAuthCheckOkResponse("OK", []*envoy_core.HeaderValueOption{}), nil
+	claims := token.Claims.(*Claims)
+
+	claimsStr, err := StructToJSON(claims)
+
+	if err != nil {
+		return makeAuthCheckDeniedResponse(int32(rpc.INTERNAL), 503, []*envoy_core.HeaderValueOption{}, "Cannot convert claims to JSON"), nil
+	}
+
+	return makeAuthCheckOkResponse("OK", []*envoy_core.HeaderValueOption{{
+		Header: &envoy_core.HeaderValue{
+			Key:   "x-passport",
+			Value: claimsStr,
+		},
+	}}), nil
 }
 
 func makeAuthCheckOkResponse(body string, headers []*envoy_core.HeaderValueOption) *auth.CheckResponse {

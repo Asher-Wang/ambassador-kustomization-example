@@ -1,4 +1,4 @@
-namespace: ambassador
+namespace: ambassador-test
 resources:
   - ambassador/namespace.yml
   - ambassador/ambassador-crds.yml

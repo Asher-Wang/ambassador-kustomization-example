@@ -14,7 +14,8 @@ func SetupConfig() {
 	Config.SetDefault("port", 3000)
 	Config.SetDefault("request_logging", true)
 	Config.SetDefault("max_concurrent_streams", 10)
-	Config.SetDefault("access_tokens", []string{"test"})
+	Config.SetDefault("jwt_rsa_public_key", "")
+	Config.SetDefault("jwt_rsa_private_key", "")
 
 	Config.AutomaticEnv()
 
