@@ -22,10 +22,10 @@ Under all namespaces:
 $ kubectl get pods --all-namespaces
 ```
 
-or under `ambassador` namespace:
+or under `ambassador-test` namespace:
 
 ```bash
-$ kubectl get pods --namespace ambassador
+$ kubectl get pods --namespace ambassador-test
 ```
 
 **3. Delete deployments**
