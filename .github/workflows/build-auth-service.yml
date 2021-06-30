@@ -39,3 +39,12 @@ jobs:
           tags: |
             dizy/ambassador-test-auth-service-grpc:latest
             dizy/ambassador-test-auth-service-grpc:${{ github.sha }}
+
+      - name: Build domain service image
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          context: domain-service
+          tags: |
+            dizy/ambassador-test-domain-service:latest
+            dizy/ambassador-test-domain-service:${{ github.sha }}
