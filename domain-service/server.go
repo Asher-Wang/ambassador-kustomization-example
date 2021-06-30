@@ -19,8 +19,8 @@ func (h *Handler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	resp.Header().Add("Content-Type", "application/json")
 	resp.Write([]byte(passport))
-	resp.Header().Add("content-type", "application/json")
 }
 
 func main() {

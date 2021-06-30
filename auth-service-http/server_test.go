@@ -54,7 +54,7 @@ func TestGenerateTokens(t *testing.T) {
 
 	claims1 := &handler.Claims{
 		StandardClaims: &jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
+			ExpiresAt: time.Now().Add(time.Hour * 3).Unix(),
 		},
 		Id:       1,
 		Username: "user1",
@@ -62,7 +62,7 @@ func TestGenerateTokens(t *testing.T) {
 
 	claims2 := &handler.Claims{
 		StandardClaims: &jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
+			ExpiresAt: time.Now().Add(time.Hour * 3).Unix(),
 		},
 		Id:       2,
 		Username: "user2",
@@ -70,7 +70,7 @@ func TestGenerateTokens(t *testing.T) {
 
 	claims3 := &handler.Claims{
 		StandardClaims: &jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
+			ExpiresAt: time.Now().Add(time.Hour * 3).Unix(),
 		},
 		Id:       3,
 		Username: "user3",
