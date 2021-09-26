@@ -18,5 +18,16 @@ metadata:
   name: ambassador
 spec:
   config:
-    diagnostics:
-      enabled: false
+    # diagnostics:
+    #   enabled: false
+    # defaults:
+    #   httpmapping:
+    #     remove_response_headers:
+    #       - x-envoy-upstream-service-time
+    #       - server
+    server_name: hotstar_envoy
+    lua_scripts: |
+      function envoy_on_response(response_handle)
+        response_handle:headers():remove("x-envoy-upstream-service-time")
+        response_handle:headers():remove("server")
+      end

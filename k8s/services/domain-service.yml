@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: docker.io/dizy/ambassador-test-domain-service:latest
+          image: docker.io/asher4hs/upstream-server:latest
           ports:
             - name: http
               containerPort: 3000

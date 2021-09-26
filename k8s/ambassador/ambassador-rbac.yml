@@ -171,7 +171,10 @@ spec:
                 path: labels
       containers:
         - name: ambassador
-          image: docker.io/datawire/ambassador:1.13.8
+          # image: docker.io/datawire/ambassador:1.13.8
+          # image: docker.io/ihac/ambassador:1.996
+          image: docker.io/rogerhzh/ambassador:1.13.10_envoy_1.18.1
+          # image: docker.io/rogerhzh/ambassador:1.13.8_envoy_1.18.1
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
